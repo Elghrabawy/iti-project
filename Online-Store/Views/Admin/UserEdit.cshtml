@@ -1,0 +1,131 @@
+﻿@model Online_Store.Models.User
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+    var db = new StoreContext();
+    var roles = db.Roles;
+    var user = Model;
+}
+
+<form mehtod="post" asp-action="useredit">
+
+    @Html.TextBoxFor(u => u.UserId, new{@type="hidden" })
+
+    <!-- Name Container -->
+    <div class="card mb-4">
+        <h5 class="card-header">Main Information</h5>
+        <div class="card-body">
+            <div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.FirstName, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.FirstName, new { @class="form-control", @placeholder="First Name", @value = user.FirstName })
+                        @Html.ValidationMessageFor(u=>u.FirstName, "", new {@class = "text-danger"})
+
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        @Html.LabelFor(u=>u.LastName, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.LastName, new { @class="form-control", @placeholder="Last Name", @value = user.LastName })
+                        @Html.ValidationMessageFor(u=>u.LastName, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Login Container -->
+    <div class="card mb-4">
+        <h5 class="card-header">Login</h5>
+        <div class="card-body">
+            <div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.Username, new {@class="form-label"})
+                        <div class="input-group">
+
+                            <span class="input-group-text" id="basic-addon11">@@</span>
+                            @Html.TextBoxFor(u=>u.Username, new {
+                            @class="form-control",
+                            @placeholder="Username",
+                            @value=user.Username,
+                            @readonly = true
+                            })
+                        </div>
+                        @Html.ValidationMessageFor(u=>u.Username, "", new {@class = "text-danger"})
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-password-toggle">
+                            @Html.LabelFor(u=>u.Password, new {@class="form-label"})
+                            <div class="input-group">
+                                @Html.PasswordFor(u=>u.Password,
+                                new {   
+                                    @class="form-control",
+                                    @placeholder="Password",
+                                    @value = user.Password
+                                })
+
+                                <span id="passwordInput2" class="input-group-text cursor-pointer">
+                                    <i class="bx bx-hide"></i>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(u=>u.Password, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                    <div class="col">
+                        @Html.LabelFor(u=>u.Email, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.Email, new { @class="form-control", @placeholder="Email", @type="email" })
+
+                        @Html.ValidationMessageFor(u=>u.Email, "", new {@class = "text-danger"})
+                    </div>
+
+                    <div class="col">
+                        @Html.LabelFor(u=>u.RoleId, new {@class="form-label"})
+                        @Html.DropDownListFor(u=>u.RoleId, new SelectList(roles, "RoleId", "RoleName"), new { @class="form-control", @placeholder="Role" })
+                        @Html.ValidationMessageFor(u=>u.RoleId, "", new {@class = "text-danger"})
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Container -->
+    <div class="card mb-4">
+        <h5 class="card-header">Contact</h5>
+        <div class="card-body">
+            <div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.State, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.State, new { @class="form-control", @placeholder="State" })
+
+                        @Html.ValidationMessageFor(u=>u.State, "", new {@class = "text-danger"})
+
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.City, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.City, new { @class="form-control", @placeholder="City" })
+
+                        @Html.ValidationMessageFor(u=>u.City, "", new {@class = "text-danger"})
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.Phone, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.Phone, new { @class="form-control", @placeholder="Phone" })
+
+                        @Html.ValidationMessageFor(u=>u.Phone, "", new {@class = "text-danger"})
+
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        @Html.LabelFor(u=>u.Zip, new {@class="form-label"})
+                        @Html.TextBoxFor(u=>u.Zip, new { @class="form-control", @placeholder="Zip" })
+
+                        @Html.ValidationMessageFor(u=>u.Zip, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit</button>
+    <button type="reset" class="btn btn-danger">Cancel</button>
+</form>

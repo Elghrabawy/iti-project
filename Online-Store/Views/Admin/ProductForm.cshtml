@@ -1,0 +1,77 @@
+﻿@model Online_Store.ViewModels.ProductVM
+@{
+	Layout="../Shared/_DashboardLayout.cshtml";
+	var db = new StoreContext();
+	var categories = db.Categories;
+}
+
+<form method="post" asp-action="productform" enctype="multipart/form-data">
+
+	<div class="card mb-4">
+		<h5 class="card-header">Product Form</h5>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-12 mb-2">
+					<div class="row">
+						<div class="col-lg-6 col-md-12">
+							@Html.LabelFor(p=>p.ProductName, new {@class="form-label"})
+							@Html.TextBoxFor(p=>p.ProductName, new { @class="form-control", @placeholder="Product Name"})
+							@Html.ValidationMessageFor(p=>p.ProductName, "", new {@class = "text-danger"})
+						</div>
+						<div class="col-lg-6 col-md-12">
+							@Html.LabelFor(p=>p.CategoryId, new {@class="form-label"})
+							@Html.DropDownListFor(p=>p.CategoryId, new SelectList(categories, "CategoryId", "CategoryName"), new { @class="form-control", @placeholder="Category"})
+							@Html.ValidationMessageFor(p=>p.CategoryId, "", new {@class = "text-danger"})
+						</div>
+					</div>
+				</div>
+				<div class="col-12 mb-2">
+					<div class="row">
+
+						<div class="col-lg-6 col-md-12">
+							@Html.LabelFor(p=>p.Price, new {@class="form-label"})
+							<div class="input-group">
+								<span class="input-group-text">$</span>
+								@Html.TextBoxFor(p=>p.Price, new { @class="form-control", @placeholder="Price"})
+								<span class="input-group-text">.00</span>
+							</div>
+							@Html.ValidationMessageFor(p=>p.Price, "", new {@class = "text-danger"})
+						</div>
+
+						<div class="col-lg-6 col-md-12">
+							@Html.LabelFor(p=>p.Quantity, new {@class="form-label"})
+							@Html.TextBoxFor(p =>p.Quantity, new { 
+								@class="form-control", 
+								@placeholder="Quantity",
+								@type="number"
+							})
+							@Html.ValidationMessageFor(p=>p.Quantity, "", new {@class = "text-danger"})
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12 mb-2">
+
+					@Html.LabelFor(p=>p.Description, new {@class="form-label"})
+					<div class="input-group">
+						@Html.TextAreaFor(p=>p.Description, new { @class="form-control", @placeholder="Description" })
+					</div>
+					@Html.ValidationMessageFor(p=>p.Description, "", new {@class = "text-danger"})
+				</div>
+				<div class="col-12 mb-2">
+					@Html.LabelFor(p=>p.ImageFile, new {@class="form-label"})
+						@Html.TextBoxFor(p => p.ImageFile, new { 
+							@class="form-control", 
+							@placeholder="Image",
+							@type="file"
+						})
+					@Html.ValidationMessageFor(p=>p.ImageFile, "", new {@class = "text-danger"})
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create</button>
+	<button type="reset" class="btn btn-danger">Cancel</button>
+
+</form>

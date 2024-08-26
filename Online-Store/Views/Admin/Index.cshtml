@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+    var db = new StoreContext();
+    int totalOrders = db.OrderItems.Count();
+    var categories = db.Categories.Select(
+        c => new
+        {
+            CategoryName = c.CategoryName,
+            Description = c.Description,
+            ProductCount = c.Products.Count()
+        }
+    );
+
+    var categories_itemcount = from c in db.Categories
+                               join oi in db.OrderItems on c.CategoryId equals oi.Product.CategoryId into ps_jointable
+                               from p in ps_jointable.DefaultIfEmpty()
+                               group c by c.CategoryName into g
+                               select new
+                               {
+                                    CategoryName = g.Key,
+                                    Description = g.FirstOrDefault().Description,
+                                    ProductCount = g.Count()
+                               };
+}
+
+<div class="card h-100">
+    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+        <div class="card-title mb-0">
+            <h5 class="m-0 me-2">Order Statistics</h5>
+            <small class="text-muted">@totalOrders Total Sales</small>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex flex-column align-items-center gap-1">
+                <h2 class="mb-2">@totalOrders</h2>
+                <span>Total Orders</span>
+            </div>
+        </div>
+        <ul class="p-0 m-0">
+            @foreach (var category in categories_itemcount)
+            {
+                <li class="d-flex mb-4 pb-1">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-primary">
+                            <i class="bx bx-mobile-alt"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                            <h6 class="mb-0">@category.CategoryName</h6>
+                            <small class="text-muted">@category.Description</small>
+                        </div>
+                        <div class="user-progress">
+                            <small class="fw-semibold">@category.ProductCount</small>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
